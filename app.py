@@ -9,6 +9,8 @@ import io
 from PIL import Image
 import numpy as np
 import warnings
+import os
+os.environ["STREAMLIT_SERVER_PORT"] = "8080"
 warnings.filterwarnings("ignore")
 
 st.set_page_config(layout="wide")
