@@ -10,46 +10,73 @@ from PIL import Image
 import numpy as np
 import warnings
 import os
-os.environ["STREAMLIT_SERVER_PORT"] = "8080"
+#os.environ["STREAMLIT_SERVER_PORT"] = "8080"
 warnings.filterwarnings("ignore")
 
 st.set_page_config(layout="wide")
 
 st.markdown("""
     <style>
-        .main { background-color: #f8f9fa; }
-        .stExpander {
-          background-color: #1e1e1e !important;
-          border: 1px solid #444 !important;
-          border-radius: 6px !important;
-          padding: 0.5rem;
+        /* General background and text color */
+        body, .main, .block-container {
+            background-color: #111 !important;
+            color: #fff !important;
         }
-        .stExpanderHeader {
-          font-weight: 600;
-          color: #f0f0f0;
+
+        h1, h2, h3, h4, h5, h6, p, label, span, div {
+            color: #fff !important;
         }
-        .stExpander + .stExpander {
-          margin-top: 1rem;
+
+        /* Sidebar styling */
+        [data-testid="stSidebar"] {
+            background-color: #1c1c1c !important;
+            color: #fff !important;
+            border-right: 1px solid #333;
         }
+
+        /* Sidebar elements */
+        .stSelectbox, .stSlider, .stFileUploader, .stMarkdown, .css-1v0mbdj, .e1tzin5v2 {
+            color: #fff !important;
+        }
+
+        /* Metric and box styling */
+        .stMetricLabel, .stMetricValue {
+            color: #fff !important;
+        }
+
+        /* Add slight box shape around sections */
+        /* .stExpander, .stDataFrame, .element-container, .stAlert {
+            background-color: #222 !important;
+            color: #fff !important;
+            border-radius: 8px;
+            padding: 1rem;
+            border: 1px solid #444;
+        } */
+
+        /* Improve expander headers */
+        /* .stExpanderHeader {
+            font-weight: 600 !important;
+            color: #fff !important;
+        } */
     </style>
 """, unsafe_allow_html=True)
 
-st.markdown("""
-    <style>
-    [data-testid="stSidebar"] {
-        width: 260px;
-    }
-    </style>
-""", unsafe_allow_html=True)
+# st.markdown("""
+#     <style>
+#     [data-testid="stSidebar"] {
+#         width: 260px;
+#     }
+#     </style>
+# """, unsafe_allow_html=True)
 
-st.markdown("""
-  <style>
-  .css-1v0mbdj.e1tzin5v2 {
-      width: 50px !important;
-      min-width: 50px !important;
-  }
-  </style>
-""", unsafe_allow_html=True)
+# st.markdown("""
+#   <style>
+#   .css-1v0mbdj.e1tzin5v2 {
+#       width: 50px !important;
+#       min-width: 50px !important;
+#   }
+#   </style>
+# """, unsafe_allow_html=True)
 
 # --- Load model and data ---
 model = xgb.Booster()
@@ -69,7 +96,7 @@ st.title("Customer Churn Prediction Dashboard")
 st.markdown("Get detailed insights into customer churn predictions using ML and SHAP explanations.")
 
 col1, col2 = st.columns(2)
-left_col, middle_col, right_col = st.columns([2, 2.5, 1.5])
+left_col, middle_col, right_col = st.columns([1, 1, 1])
 
 with col2:
     st.sidebar.title("🧭 Select or Upload")
