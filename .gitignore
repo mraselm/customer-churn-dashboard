@@ -1,9 +1,23 @@
+# Ignore environment and config files
 .env
+.venv/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Ignore data and models
 *.csv
 *.xlsx
 *.pkl
-*.log
 *.json
+*.log
 *.ipynb
-__pycache__/
-catboost_info/.env
+catboost_info/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Streamlit and deployment
+.streamlit/secrets.toml
