@@ -1,0 +1,9 @@
+.env
+*.csv
+*.xlsx
+*.pkl
+*.log
+*.json
+*.ipynb
+__pycache__/
+catboost_info/
