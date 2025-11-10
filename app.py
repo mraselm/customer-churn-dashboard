@@ -1,6 +1,5 @@
 # app.py — Final Production Version (clicked AutoML + robust column handling)
 # Customer Churn Prediction Dashboard with AutoML (PyCaret) + SHAP + OpenAI GPT Insight Assistant
-# Built for Rasel Mia
 
 
 import os
@@ -12,23 +11,27 @@ warnings.filterwarnings("ignore")
 from dotenv import load_dotenv
 import os
 
+# Load .env only if it exists (for local dev)
 env_path = os.path.join(os.path.dirname(__file__), '.env')
-load_dotenv(dotenv_path=env_path)
+if os.path.exists(env_path):
+    load_dotenv(dotenv_path=env_path)
 
+# Read from environment (works for both local and DigitalOcean)
 OPENAI_KEY = os.getenv("OPENAI_API_KEY", "").strip()
+
 if OPENAI_KEY:
     try:
         from openai import OpenAI
-        client = OpenAI(api_key=OPENAI_KEY) if OPENAI_KEY else None
-        os.environ["OPENAI_API_KEY"] = OPENAI_KEY  # Ensure Streamlit sees it
-        print("✅ OpenAI key loaded early and available for Streamlit.")
+        client = OpenAI(api_key=OPENAI_KEY)
+        os.environ["OPENAI_API_KEY"] = OPENAI_KEY  # ensure Streamlit can access it
+        print("✅ OpenAI key loaded and available for Streamlit.")
         OPENAI_AVAILABLE = True
     except Exception as e:
         print(f"❌ Failed to initialize OpenAI: {e}")
         client = None
         OPENAI_AVAILABLE = False
 else:
-    print("⚠️ OpenAI key not found at startup.")
+    print("⚠️ OpenAI key not found in environment.")
     client = None
     OPENAI_AVAILABLE = False
 
@@ -42,7 +45,7 @@ st.set_page_config(page_title="Customer Churn Dashboard — AI Assistant", layou
 
 # Show OpenAI API status in sidebar
 if OPENAI_AVAILABLE:
-    st.sidebar.success("OpenAI API is connected and ready.")
+    st.sidebar.success("OpenAI API is connected")
 else:
     st.sidebar.warning("⚠️ OpenAI API not configured. Some AI features will be unavailable.")
 
@@ -967,12 +970,12 @@ with tab3:
     st.markdown('<div class="card">', unsafe_allow_html=True)
     st.subheader("💬 AI Action Recommendation")
     if OPENAI_AVAILABLE:
-        st.success("OpenAI API is connected and ready.")
+        st.success("OpenAI API: Connected")
         if prediction_proba is not None:
             if st.button("Generate Recommendation", key="ai_action_btn"):
                 with st.spinner("Generating AI insights..."):
                     profile_summary = customer_row.drop(columns=[target_col], errors='ignore').to_dict(orient='records')[0]
-                    st.success("AI Recommendation Ready")
+                    st.success("AI Recommendation:")
                     st.markdown(
                         gpt_action_recommendation(
                             prediction_proba,
