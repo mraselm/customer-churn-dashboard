@@ -1000,3 +1000,14 @@ st.markdown(
     """.format(year=pd.Timestamp.today().year),
     unsafe_allow_html=True
 )
+
+# --- Automatic detection for local vs. DigitalOcean deployment ---
+if __name__ == "__main__":
+    import os
+
+    # Detect if running locally
+    is_local = not os.environ.get("PORT")
+    port = int(os.environ.get("PORT", 8501))
+    address = "localhost" if is_local else "0.0.0.0"
+
+    os.system(f"streamlit run app.py --server.address={address} --server.port={port}")
