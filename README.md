@@ -155,8 +155,8 @@ Customer-Churn-Analysis/
 #### Step 1: Clone the Repository
 
 ```bash
-git clone https://github.com/yourusername/customer-churn-analysis.git
-cd customer-churn-analysis
+git clone https://github.com/mraselm/customer-churn-dashboard.git
+cd customer-churn-dashboard
 ```
 
 #### Step 2: Create Virtual Environment
