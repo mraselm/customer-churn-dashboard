@@ -1,0 +1,30 @@
+# ── Core app ────────────────────────────────────────────────────────────────
+streamlit>=1.35.0
+python-dotenv>=1.0.0
+
+# ── Data / ML ────────────────────────────────────────────────────────────────
+numpy>=1.24,<2.0
+pandas>=1.5,<2.0
+scipy>=1.11,<1.13
+scikit-learn>=1.4,<1.5
+imbalanced-learn>=0.12
+matplotlib>=3.7,<4.0
+seaborn>=0.13
+
+# ── PyCaret (pins its own deps: xgboost, lightgbm, catboost, optuna, etc.) ──
+pycaret==3.3.0
+
+# ── Individual model libraries (explicit for faster HF Spaces layer caching) ─
+xgboost>=2.0,<3.0
+lightgbm>=4.0,<5.0
+catboost>=1.2,<2.0
+
+# ── Charts ───────────────────────────────────────────────────────────────────
+plotly>=5.0
+
+# ── Explainability (optional — app handles ImportError gracefully) ────────────
+shap>=0.45
+dice-ml>=0.9
+
+# ── AI assistant (optional — app handles missing key gracefully) ──────────────
+openai>=1.0

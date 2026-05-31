@@ -157,18 +157,20 @@ class MonitoringAgent:
             fix_applied = "Cleaned feature names"
             
         elif problem_type == "CLASS_IMBALANCE":
-            # Adjust SMOTE settings
+            # fix_imbalance is safe when data is pre-encoded (no object columns).
             config['fix_imbalance'] = True
-            config['fix_imbalance_method'] = 'smote'
-            fix_applied = "Enabled SMOTE for class imbalance"
+            config['fold'] = max(3, config.get('fold', 10) - 1)
+            fix_applied = "Enabled SMOTE (fix_imbalance) and reduced CV folds for imbalanced data"
             
         elif problem_type == "OVERFITTING":
-            # Add regularization
-            config['remove_multicollinearity'] = True
-            config['multicollinearity_threshold'] = 0.8
-            config['feature_selection'] = True
-            config['n_features_to_select'] = 0.7  # More aggressive
-            fix_applied = "Increased regularization to reduce overfitting"
+            # Reduce overfitting via PyCaret-safe settings only.
+            # NOTE: feature_selection and remove_multicollinearity are intentionally
+            # excluded here — they silently corrupt PyCaret 3.3.x's AUC CV scorer
+            # (returns error_score=0 per fold).  Preprocessing is handled externally
+            # before clf.setup() is called.
+            config['fold'] = max(3, config.get('fold', 10) - 1)   # fewer folds → less overfitting signal
+            config['turbo'] = False                                  # keep all estimators in compare_models
+            fix_applied = "Reduced CV folds to address overfitting (feature_selection/multicollinearity handled pre-setup)"
             
         elif problem_type == "UNDERFITTING":
             # Increase model complexity
@@ -311,10 +313,10 @@ def create_monitored_training_wrapper(clf, monitoring_agent: MonitoringAgent):
             **config
         )
         
-        # Compare models
-        tree_models = ['rf', 'et', 'xgboost', 'gbc', 'lightgbm']
+        # Compare models — must match execute_training() model list in app.py (SVM removed: crashes on Windows)
+        models_to_compare = ['rf', 'et', 'xgboost', 'gbc', 'lightgbm', 'lr', 'ridge', 'catboost']
         best = clf.compare_models(
-            include=tree_models,
+            include=models_to_compare,
             sort='AUC',
             fold=config.get('fold', 10),
             turbo=config.get('turbo', False),

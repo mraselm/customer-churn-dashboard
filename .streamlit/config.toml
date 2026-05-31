@@ -1,5 +1,6 @@
 [server]
-maxUploadSize = 100
+maxUploadSize = 500
+headless = true
 
 [theme]
 base = "light"

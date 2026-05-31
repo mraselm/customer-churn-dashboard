@@ -69,7 +69,7 @@ optuna==4.5.0
 optuna-integration==4.5.0
 orjson==3.11.4
 packaging==25.0
-pandas==2.1.4
+pandas==1.5.3
 parso==0.8.5
 patsy==1.0.2
 pexpect==4.9.0
